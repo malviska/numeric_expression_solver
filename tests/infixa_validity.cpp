@@ -34,6 +34,27 @@ bool isValidParentesis(const char* value){
 
 }
 
+bool isValidOperation(const char* value){
+  const char operations[4] = {'+', '-', '*', '/'};
+  const char isValid[14] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '(', ')', '-', '+'};
+  for(int i = 0; value[i] != '\0'; i++){
+    char ch0 = '0'; // If no number before signal, assume 0.
+    if(i != 0) ch0 = value[i-1]; //Previous character
+    char ch = value[i]; // Character
+    char ch2 = value[i+1]; //Next character
+    bool firstCheck = false, secondCheck = false;
+    for(size_t j = 0; j < sizeof(operations); j++){
+      if(ch != operations[j]) continue;
+      for (size_t k = 0; k < sizeof(isValid); k++){
+        (firstCheck) ? (bool)1 : firstCheck = ch0==isValid[k];
+        (secondCheck) ? (bool)1 : secondCheck = ch2==isValid[k]; 
+      }
+      if(!firstCheck || !secondCheck) return false;
+    }
+  }
+  return true;
+}
+
 
 
 int main () 
@@ -51,23 +72,25 @@ int main ()
     {"9-(8+7)(4*5)", false}
   };
 
-  for (unsigned int i = 0; i<tests.size(); i++){
-    cout<<"Test 1: "<< tests[i].first<<" is "<<tests[i].second<<"\n";
+  for (size_t i = 0; i<tests.size(); i++){
+    cout<<"Test "<<i<<": "<< tests[i].first<<" is "<<tests[i].second<<"\n";
     (isValidParentesis(tests[i].first) == tests[i].second) ? cout<<"success\n" : cout<<"fail\n";
   }
   cout<<"\n\n====Operational Validity======\n";
   tests = {
-    {"8+-1", false},
-    {"7*3", true},
+    {"8+-1", true},
+    {"7*x", false},
     {"(8)*9", true},
-    {"()*9)", true}, //Passes through operational test but not parentesis test.
-    {"((((75)*4)*5)+8", false},
-    {"(20*(4+((1+2)*3)))", true},
-    {"9+10", true},
-    {")", false},
-    {"9-(8+7)(4*5)", false}
+    {"-9", true},
+    {")*-10", true}, //Pass through operational validity but not through parentesis validity
+    {"8**10", false},
+    {"4/*10", false},
+    {"9,856-10,789*3", true},
   };
-
+   for (size_t i = 0; i<tests.size(); i++){
+    cout<<"Test "<<i<<": "<< tests[i].first<<" is "<<tests[i].second<<"\n";
+    (isValidOperation(tests[i].first) == tests[i].second) ? cout<<"success\n" : cout<<"fail\n";
+  }
 
   return 0;
 

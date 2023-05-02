@@ -14,7 +14,6 @@ class StackDynamic : public Stack<ItemType>
     void stack(ItemType item);
     ItemType unstack();
     void clean();
-  private:
     Cell<ItemType>* top;
 };
 

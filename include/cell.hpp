@@ -8,12 +8,12 @@ class Cell
 {
   public:
     Cell();
-
-  private:
     ItemType item;
     Cell * next;
   template<typename U>
   friend class StackDynamic;
+  template<typename U>
+  friend class QueueDynamic;
 
 };
 

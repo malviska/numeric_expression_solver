@@ -43,3 +43,4 @@ void StackDynamic<ItemType>::clean(){
 }
 
 template class StackDynamic<int>;
+template class StackDynamic<char>;

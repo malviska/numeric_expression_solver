@@ -10,5 +10,13 @@ class EmptyStack {
     std::string _msg = "Empty_Stack!";
 };
 
+class EmptyQueue {
+  public:
+    EmptyQueue(){getMsg();};
+    std::string getMsg(){return _msg;}
+  private:
+    std::string _msg = "Empty_Queue!";
+};
+
 
 #endif

@@ -11,6 +11,31 @@ infconv := $(OBJ)/infconv.o
 cell := $(OBJ)/cell.o
 stack := $(OBJ)/stack.o
 
+
+
+
+all: main stack cell
+	make clear;
+	$(BUILD) $(cell) $(stack) ./obj/main.o -o $(BIN)/solver ;
+	$(BIN)/solver
+
+
+
+main:
+	$(FLAGS) $(SRC)/main.cpp -o ./obj/main.o
+
+
+t_posconv: posconv
+	make clear;
+	$(BUILD) $(cell) $(stack) ./obj/posfixa.o -o $(BIN)/t_posconv ;
+	$(BIN)/t_posconv
+
+
+
+posconv: stack cell
+	$(FLAGS) $(TST)/posfixa_conversion.cpp -o ./obj/posfixa.o
+
+
 t_infconv: infconv cell stack
 	make clear;
 	$(BUILD) $(infconv) $(cell) $(stack) -o $(BIN)/t_infconv ;
@@ -24,6 +49,17 @@ t_infixa: infixa cell stack
 	$(BUILD) $(infixa) $(cell) $(stack) -o $(BIN)/t_infixa ;
 	$(BIN)/t_infixa
 
+
+t_pos_v: pos_validity stack cell
+	make clear;
+	$(BUILD) $(cell) $(stack) ./obj/pos_validity.o -o $(BIN)/t_pos_v ;
+	$(BIN)/t_pos_v
+
+
+pos_validity:
+	$(FLAGS) $(TST)/posfixa_validity.cpp -o ./obj/pos_validity.o
+
+
 infixa: stack
 	$(FLAGS) $(TST)/infixa_validity.cpp -o $(infixa)
 
@@ -35,3 +71,6 @@ cell:
 
 clear:
 	rm -rf ./bin/*
+
+clean:
+	rm -rf ./bin/* ./obj/*

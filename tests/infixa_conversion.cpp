@@ -7,6 +7,61 @@
 #include"../include/stack_dynamic.hpp"
 using namespace std;
 
+
+bool isValidPosfix(const char * posfix) {
+  StackDynamic<double> st;
+  int count = 0, counter = 0;
+  double num;
+  char val = posfix[0];
+  char get[10];
+  char * endpointer;
+  while(val != '\0'){
+    if(val == ' ' && (strcmp(get, "\0") == 0))
+      ;
+    else if(val == ' '){
+      num = strtod(get, &endpointer);
+      if(*endpointer == '\0')
+        st.stack(num);
+      counter = 0;
+      memset(get, 0, sizeof(get));
+    }
+    else if(isdigit(val) || val == '.'){
+      get[counter] = val;
+      counter++;
+    }
+    else if(val == '+' || val == '-' || val == '/' || val == '*'){
+      if(st.getSize() < 2)
+        return false;
+      double n = st.unstack();
+      double m = st.unstack();
+      double res;
+      switch(val){
+        case '+':
+          res = m+n;
+          break;
+        case '-':
+          res = m-n;
+          break;
+        case '*':
+          res = m*n;
+          break;
+        case '/':
+          if(n == 0){
+            return false;
+          }
+          res = m/n;
+          break;
+      }
+      st.stack(res);
+    }else{
+      return false;
+    }
+    count++;
+    val = posfix[count];
+  }
+  return st.getSize() == 1;
+}
+
 void toPos(const char* value, int& index, char*  posfix){
   StackDynamic<char> st;
   char initCell = '(';
